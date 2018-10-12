@@ -14,6 +14,6 @@ namespace ApsRedes.Models
         [DisplayName("Username")]
         public string name { get; set; }
 
-        public char mark { get; set; }
+        public bool mark { get; set; }
     }
 }

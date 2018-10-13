@@ -9,11 +9,13 @@ namespace ApsRedes.Models
 {
     public class Player
     {
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [StringLength(5)]
         [DisplayName("Username")]
         public string name { get; set; }
 
         public bool mark { get; set; }
+
+        public int id { get; set; }
     }
 }

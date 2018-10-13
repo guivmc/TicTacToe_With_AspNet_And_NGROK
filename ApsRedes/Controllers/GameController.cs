@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,6 +11,7 @@ namespace ApsRedes.Controllers
     public class GameController : Controller
     {
         public static List<Player> players { get; set; } = new List<Player>();
+        public static int id { get; set; } = 0;
 
         public static bool mark { get; set; } = false;
 
@@ -23,18 +25,36 @@ namespace ApsRedes.Controllers
         [HttpGet]
         public ActionResult AddPlayer()
         {
-            return View();
+            if (this.Session["Player"] == null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Lobby", players);
+            }
         }
 
         [HttpPost]
         public ActionResult AddPlayer(Player player)
-        {           
-            player.mark = (mark = !mark);
-            players.Add(player);
+        {
+            if (player.name != null)
+            {
+                player.mark = (mark = !mark);
+                player.id = id;
+                players.Add(player);
 
-            if (this.Session["Player"] == null) this.Session["Player"] = player;
+                this.Session["Player"] = player;
 
-            return View("Lobby", players);
+
+                id++;
+
+                return RedirectToAction("Lobby", players);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]

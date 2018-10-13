@@ -6,9 +6,6 @@
 
 <h2>Lobby</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -31,7 +28,8 @@
         </td>
         <td>
             @Html.ActionLink("EditPlayer", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Play", "TicTacToeLobby", "TicTacToe")
         </td>
     </tr>
 }

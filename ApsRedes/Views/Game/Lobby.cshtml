@@ -11,9 +11,6 @@
         <th>
             @Html.DisplayNameFor(model => model.name)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.mark)
-        </th>
         <th></th>
     </tr>
 
@@ -22,9 +19,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.mark)
         </td>
         <td>
             @Html.ActionLink("EditPlayer", "Edit", new { /* id=item.PrimaryKey */ }) |

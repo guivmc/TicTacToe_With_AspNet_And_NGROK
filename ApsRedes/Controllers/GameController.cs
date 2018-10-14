@@ -13,8 +13,6 @@ namespace ApsRedes.Controllers
         public static List<Player> players { get; set; } = new List<Player>();
         public static int id { get; set; } = 0;
 
-        public static bool mark { get; set; } = false;
-
         // GET: Game
         [HttpGet]
         public ActionResult Index()
@@ -40,7 +38,6 @@ namespace ApsRedes.Controllers
         {
             if (player.name != null)
             {
-                player.mark = (mark = !mark);
                 player.id = id;
                 players.Add(player);
 

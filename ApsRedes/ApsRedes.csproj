@@ -202,6 +202,7 @@
     <Content Include="Views\Game\AddPlayer.cshtml" />
     <Content Include="Views\Game\EditPlayer.cshtml" />
     <Content Include="Views\TicTacToe\TicTacToeLobby.cshtml" />
+    <Content Include="Views\TicTacToe\Board.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

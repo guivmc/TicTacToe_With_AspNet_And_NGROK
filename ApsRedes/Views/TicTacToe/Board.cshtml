@@ -71,9 +71,31 @@
                     } else {
                         drawO(xCordinate, yCordinate);
                     }
+
+                    var x = Math.floor(xCordinate);
+
+                    if (x === 66) x = 2;
+                    else if (x === 133) x = 3;
+
+                    var y = Math.floor(yCordinate);
+
+                    if (y === 66) y = 2;
+                    else if (y === 133) y = 3;
+
+                    $.post('/TicTacToe/PlayTurn/?posX=' + x + '&posy=' + y);
                 }
             }
         }
+
+        //var x = xCordinate;
+
+        //if (x == 66) x = 2;
+        //else if (x == 133) x = 3;
+
+        //var y = mouse.y;
+
+        //$.get('/TicTacToe/Test/?posX=' + x + '&posy=2');
+        @*//$.get( '@Url.Action( "Test", "TicTacToe" )');*@
     }
 
     function clearPlayingArea(xCordinate, yCordinate) {
@@ -177,7 +199,7 @@
         width: 100%;
     }
 
-    .canvas-wrapper-parent {
+    /*.canvas-wrapper-parent {
         transform-style: preserver-3d;
-    }
+    }*/
 </style>

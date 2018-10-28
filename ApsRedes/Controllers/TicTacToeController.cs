@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace ApsRedes.Controllers
@@ -74,7 +75,38 @@ namespace ApsRedes.Controllers
                 }
             }
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+        }
 
+        [HttpPost]
+        public ActionResult PlayTurn(int posX, int posY)
+        {
+            if( this.Session["Player"] != null )
+            {
+                var player = this.Session["Player"] as Player;
+
+                var match = matches.Find( m => m.p1.id == player.id || m.p2.id == player.id );
+
+                if( player.mark == match.turn )
+                {
+                    match.roundCounter++;
+                    match.turn = !match.turn;
+
+                    if( match.roundCounter < 9 )
+                    {
+                        return Json( new { success = true, responseText = "Your message successfuly sent!" }, JsonRequestBehavior.AllowGet );
+                    }
+                    else
+                    {
+                        return Json( new { success = false, responseText = "The attached file is not supported." }, JsonRequestBehavior.AllowGet );
+                    }
+                }
+                else
+                {
+                    return Content( "<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>" );
+                }
+            }
+
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
         }
     }
 }

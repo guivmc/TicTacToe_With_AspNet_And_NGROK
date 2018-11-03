@@ -9,7 +9,7 @@ namespace ApsRedes.Models
     {
         public Player p1 { get; set; }
         public Player p2 { get; set; }
-        public int[,] board { get; set; }
+        public int[,] board { get; set; } = new int[3, 3];
         public int roundCounter { get; set; } = 0;
         public bool turn { get; set; } = true;
     }

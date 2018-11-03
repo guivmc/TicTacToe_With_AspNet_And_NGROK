@@ -70,7 +70,7 @@ namespace ApsRedes.Controllers
 
                 if( match != null )
                 {
-                    match.board = new int[3, 3];
+                    //match.board = new int[3, 3];
                     return View(match);
                 }
             }
@@ -88,16 +88,32 @@ namespace ApsRedes.Controllers
 
                 if( player.mark == match.turn )
                 {
+                    if( match.board[posX, posY] == 0 )
+                    {
+                        if( match.turn )
+                        {
+                            match.board[posX, posY] = 1;
+                        }
+                        else
+                        {
+                            match.board[posX, posY] = 2;
+                        }
+                    }
+                    else
+                    {
+                        return Json( new { invalidPos = true } );
+                    }
+
                     match.roundCounter++;
                     match.turn = !match.turn;
 
-                    if( match.roundCounter < 9 )
+                    if( match.roundCounter <= 9 )
                     {
                         return Json( new { success = true, turn = !match.turn } );
                     }
                     else
                     {
-                        return Json( new { error = true, turn = !match.turn } );
+                        return Json( new { over = true } );
                     }
                 }
                 else

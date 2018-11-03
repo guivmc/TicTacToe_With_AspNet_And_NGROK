@@ -66,12 +66,12 @@ namespace ApsRedes.Controllers
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Find( m => m.p1.id == player.id || m.p2.id == player.id );
+                var match = matches.Find( m =>( m.p1.id == player.id || m.p2.id == player.id) && m.p1 != null && m.p2 != null );
 
                 if( match != null )
                 {
                     match.board = new int[3, 3];
-                    return View();
+                    return View(match);
                 }
             }
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
@@ -93,16 +93,16 @@ namespace ApsRedes.Controllers
 
                     if( match.roundCounter < 9 )
                     {
-                        return Json( new { success = true, responseText = "Your message successfuly sent!" }, JsonRequestBehavior.AllowGet );
+                        return Json( new { success = true, turn = !match.turn } );
                     }
                     else
                     {
-                        return Json( new { success = false, responseText = "The attached file is not supported." }, JsonRequestBehavior.AllowGet );
+                        return Json( new { error = true, turn = !match.turn } );
                     }
                 }
                 else
                 {
-                    return Content( "<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>" );
+                    return Json( new { error = true } );
                 }
             }
 

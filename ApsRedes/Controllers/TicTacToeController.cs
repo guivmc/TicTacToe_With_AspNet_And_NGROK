@@ -46,11 +46,6 @@ namespace ApsRedes.Controllers
                     matches.Single( m => m.p1 != null && m.p2 == null ).p2 = player;
                 }
 
-                //if(matches.Find(m => m.p1 != null && m.p2 != null && m.p1.id == m.p2.id) != null)
-                //{
-                //    matches.Single(m => m.p1 != null && m.p2 != null && m.p1.id == m.p2.id).p2 = null;
-                //}
-
                 return View( matches.Single( m => m.p1.id == player.id || m.p2.id == player.id ) );
             }
             else
@@ -66,28 +61,28 @@ namespace ApsRedes.Controllers
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Find( m =>( m.p1.id == player.id || m.p2.id == player.id) && m.p1 != null && m.p2 != null );
+                var match = matches.Single( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
 
                 if( match != null )
                 {
-                    //match.board = new int[3, 3];
-                    return View(match);
+                    return View( match );
                 }
             }
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
         }
 
         [HttpPost]
-        public ActionResult PlayTurn(int posX, int posY)
+        public ActionResult PlayTurn( int posX, int posY )
         {
             if( this.Session["Player"] != null )
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Find( m => m.p1.id == player.id || m.p2.id == player.id );
+                var match = matches.Single( m => m.p1.id == player.id || m.p2.id == player.id );
 
                 if( player.mark == match.turn )
                 {
+
                     if( match.board[posX, posY] == 0 )
                     {
                         if( match.turn )
@@ -101,14 +96,137 @@ namespace ApsRedes.Controllers
                     }
                     else
                     {
-                        return Json( new { invalidPos = true } );
+                        return Json( new { invalidPos = true, turn = match.turn } );
                     }
 
-                    match.roundCounter++;
-                    match.turn = !match.turn;
+                    int win1 = 0;
+                    int win2 = 0;
 
-                    if( match.roundCounter <= 9 )
+                    //check col
+                    for( int i = 0; i < 3; i++ )
                     {
+                        if( match.board[posX, i] == 0 )
+                            break;
+                        else
+                        {
+                            if( match.board[posX, i] == 1 )
+                            {
+                                win1++;
+                            }
+                            else if( match.board[posX, i] == 2 )
+                            {
+                                win2++;
+                            }
+                        }
+                        if( i == 3 - 1 )
+                        {
+                            //report win for s
+                            if( win1 > 2 || win2 > 2 )
+                            {
+                                return Json( new { success = true, over = true, turn = match.turn } );
+                            }
+                        }
+                    }
+
+                    win1 = 0;
+                    win2 = 0;
+
+                    //check row
+                    for( int i = 0; i < 3; i++ )
+                    {
+                        if( match.board[i, posY] == 0 )
+                            break;
+                        else
+                        {
+                            if( match.board[i, posY] == 1 )
+                            {
+                                win1++;
+                            }
+                            else if( match.board[i, posY] == 2 )
+                            {
+                                win2++;
+                            }
+                        }
+                        if( i == 3 - 1 )
+                        {
+                            //report win for s
+                            if( win1 > 2 || win2 > 2 )
+                            {
+                                return Json( new { success = true, over = true, turn = match.turn } );
+                            }
+                        }
+                    }
+
+                    win1 = 0;
+                    win2 = 0;
+
+                    //check diag
+                    if( posX == posY )
+                    {
+                        //we're on a diagonal
+                        for( int i = 0; i < 3; i++ )
+                        {
+                            if( match.board[i, i] == 0 )
+                                break;
+                            else
+                            {
+                                if( match.board[i, i] == 1 )
+                                {
+                                    win1++;
+                                }
+                                else if( match.board[i, i] == 2 )
+                                {
+                                    win2++;
+                                }
+                            }
+                            if( i == 3 - 1 )
+                            {
+                                //report win for s
+                                if( win1 > 2 || win2 > 2 )
+                                {
+                                    return Json( new { success = true, over = true, turn = match.turn } );
+                                }
+                            }
+                        }
+                    }
+
+                    win1 = 0;
+                    win2 = 0;
+
+                    //check anti diag (thanks rampion)
+                    if( posX + posY == 3 - 1 )
+                    {
+                        for( int i = 0; i < 3; i++ )
+                        {
+                            if( match.board[i, ( 3 - 1 ) - i] == 0 )
+                                break;
+                            else
+                            {
+
+                                if( match.board[i, ( 3 - 1 ) - i] == 1 )
+                                {
+                                    win1++;
+                                }
+                                else if( match.board[i, ( 3 - 1 ) - i] == 2 )
+                                {
+                                    win2++;
+                                }
+                            }
+                            if( i == 3 - 1 )
+                            {
+                                //report win for s
+                                if( win1 > 2 || win2 > 2 )
+                                {
+                                    return Json( new { success = true, over = true, turn = match.turn } );
+                                }
+                            }
+                        }
+                    }
+
+                    if( match.roundCounter <= 8 )
+                    {
+                        match.roundCounter++;
+                        match.turn = !match.turn;
                         return Json( new { success = true, turn = !match.turn } );
                     }
                     else

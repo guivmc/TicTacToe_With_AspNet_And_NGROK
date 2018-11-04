@@ -16,13 +16,6 @@
 <script src="//code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        drawLines(10, lineColor);
-        //Board = { (0, 0),  (66, 0),  (133, 0) }
-        //Board = { (0, 66),  (66, 66),  (133, 66) }
-        //Board = { (0, 133),  (66, 133),  (133, 133) }
-    })
-
     var player = 1;
     var lineColor = "#ddd";
 
@@ -35,7 +28,31 @@
     canvas.height = canvasSize;
     context.translate(0.5, 0.5);
 
+    canvas.addEventListener('mouseup', function (event) {
+        if (player === 1) {
+            player = 2;
+        } else {
+            player = 1;
+        }
+
+        var canvasMousePosition = getCanvasMousePosition(event);
+        addPlayingPiece(canvasMousePosition);
+        drawLines(10, lineColor);
+    });
+
+    var board = getInitialBoard(0);
+
+    $(document).ready(function () {
+        drawLines(10, lineColor);
+        //Board = { (0, 0),  (66, 0),  (133, 0) }
+        //Board = { (0, 66),  (66, 66),  (133, 66) }
+        //Board = { (0, 133),  (66, 133),  (133, 133) }
+    })
+
+
+
     function getInitialBoard(defaultValue) {
+
         var board = [];
 
         for (var x = 0; x < 3; x++) {
@@ -44,12 +61,10 @@
             for (var y = 0; y < 3; y++) {
                 board[x].push(defaultValue);
             }
-        }
+        }      
 
         return board;
     }
-
-    var board = getInitialBoard("");
 
     function addPlayingPiece(mouse) {
         var xCordinate;
@@ -64,14 +79,6 @@
                     mouse.x >= xCordinate && mouse.x <= xCordinate + sectionSize &&
                     mouse.y >= yCordinate && mouse.y <= yCordinate + sectionSize
                 ) {
-
-                    //clearPlayingArea(xCordinate, yCordinate);
-
-                    //if (player === 1) {
-                    //    drawX(xCordinate, yCordinate);
-                    //} else {
-                    //    drawO(xCordinate, yCordinate);
-                    //}
 
                     var boardX = xCordinate;
                     var boardY = yCordinate;
@@ -104,33 +111,29 @@
 
                             if (response.error) {
                                 alert("Wait for your turn.");
+                                return;
                             }
 
                             if (response.over) {
                                 alert("End of the match.");
+                                return;
                             }
 
                             if (response.invalidPos) {
                                 alert("Place already marked.");
+                                if (!response.turn) {
+                                    drawX(boardX, boardY);
+                                }
+                                else {
+                                    drawO(boardX, boardY);
+                                }
+                                return;
                             }
                         }
-                        //error: function (response) {
-                        //    if (response.error) {
-                        //        alert("Wait for your turn.");
-                        //    }
-                        //}
                     });
                 }
             }
         }
-
-        //var x = xCordinate;
-
-        //if (x == 66) x = 2;
-        //else if (x == 133) x = 3;
-
-        //var y = mouse.y;
-
         //$.get('/TicTacToe/Test/?posX=' + x + '&posy=2');
         @*//$.get( '@Url.Action( "Test", "TicTacToe" )');*@
     }
@@ -209,18 +212,6 @@
             y: event.clientY - rect.top
         }
     }
-
-    canvas.addEventListener('mouseup', function (event) {
-        if (player === 1) {
-            player = 2;
-        } else {
-            player = 1;
-        }
-
-        var canvasMousePosition = getCanvasMousePosition(event);
-        addPlayingPiece(canvasMousePosition);
-        drawLines(10, lineColor);
-    });
 </script>
 
 <style>
@@ -235,8 +226,4 @@
         transform: translateY(-50%);
         width: 100%;
     }
-
-    /*.canvas-wrapper-parent {
-        transform-style: preserver-3d;
-    }*/
 </style>

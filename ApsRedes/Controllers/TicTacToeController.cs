@@ -55,6 +55,30 @@ namespace ApsRedes.Controllers
         }
 
         [HttpGet]
+        public ActionResult DrawnBoard()
+        {
+            if( this.Session["Player"] != null )
+            {
+                var player = this.Session["Player"] as Player;
+
+                var match = matches.Single( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
+
+                var pos1 = match.board[0, 0];
+                var pos2 = match.board[0, 1];
+                var pos3 = match.board[0, 2];
+                var pos4 = match.board[1, 0];
+                var pos5 = match.board[1, 1];
+                var pos6 = match.board[1, 2];
+                var pos7 = match.board[2, 0];
+                var pos8 = match.board[2, 1];
+                var pos9 = match.board[2, 2];
+
+                return Json( new { pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9 }, JsonRequestBehavior.AllowGet );
+            }
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+        }
+
+        [HttpGet]
         public ActionResult Board()
         {
             if( this.Session["Player"] != null )

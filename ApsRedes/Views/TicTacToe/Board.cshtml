@@ -47,6 +47,14 @@
         //Board = { (0, 0),  (66, 0),  (133, 0) }
         //Board = { (0, 66),  (66, 66),  (133, 66) }
         //Board = { (0, 133),  (66, 133),  (133, 133) }
+
+        $.ajax({
+            type: 'GET',
+            url: '/TicTacToe/DrawnBoard',
+            success: function (response) {
+                alert(response.pos1);
+            }
+        });
     })
 
 

@@ -61,7 +61,7 @@ namespace ApsRedes.Controllers
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Single( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
+                var match = matches.SingleOrDefault( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
 
                 var pos1 = match.board[0, 0];
                 var pos2 = match.board[0, 1];
@@ -85,7 +85,7 @@ namespace ApsRedes.Controllers
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Single( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
+                var match = matches.SingleOrDefault( m => ( m.p1.id == player.id || m.p2.id == player.id ) && m.p1 != null && m.p2 != null );
 
                 if( match != null )
                 {
@@ -102,7 +102,7 @@ namespace ApsRedes.Controllers
             {
                 var player = this.Session["Player"] as Player;
 
-                var match = matches.Single( m => m.p1.id == player.id || m.p2.id == player.id );
+                var match = matches.SingleOrDefault( m => m.p1.id == player.id || m.p2.id == player.id );
 
                 if( player.mark == match.turn )
                 {

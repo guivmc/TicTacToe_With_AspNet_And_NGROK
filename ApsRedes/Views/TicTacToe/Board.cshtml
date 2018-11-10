@@ -52,7 +52,69 @@
             type: 'GET',
             url: '/TicTacToe/DrawnBoard',
             success: function (response) {
-                alert(response.pos1);
+                //alert(response.pos1 + " - " + response.pos2);
+                if (response.pos1 == 1) {
+                    drawX(0, 0);
+                }
+                else if (response.pos1 == 2) {
+                    drawO(0, 0);
+                }
+
+                if (response.pos2 == 1) {
+                    drawX(0, 66);
+                }
+                else if (response.pos2 == 2) {
+                    drawO(0, 66);
+                }
+
+                if (response.pos3 == 1) {
+                    drawX(0, 133);
+                }
+                else if (response.pos3 == 2) {
+                    drawO(0, 133);
+                }
+
+                if (response.pos4 == 1) {
+                    drawX(66, 0);
+                }
+                else if (response.pos4 == 2) {
+                    drawO(66, 0);
+                }
+
+                if (response.pos5 == 1) {
+                    drawX(66, 66);
+                }
+                else if (response.pos5 == 2) {
+                    drawO(66, 66);
+                }
+
+                if (response.pos6 == 1) {
+                    drawX(66, 133);
+                }
+                else if (response.pos6 == 2) {
+                    drawO(66, 133);
+                }
+
+                if (response.pos7 == 1) {
+                    drawX(133, 0);
+                }
+                else if (response.pos7 == 2) {
+                    drawO(133, 0);
+                }
+
+                if (response.pos8 == 1) {
+                    drawX(133, 66);
+                }
+                else if (response.pos8 == 2) {
+                    drawO(133, 66);
+                }
+
+                if (response.pos9 == 1) {
+                    drawX(133, 133);
+                }
+                else if (response.pos9 == 2) {
+                    drawO(133, 133);
+                }
             }
         });
     })
